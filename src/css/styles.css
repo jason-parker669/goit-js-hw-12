@@ -76,16 +76,49 @@ ul, li {
   color: #FFFFFF;
   border: none;
   border-radius: 8px;
+  cursor: pointer;
 }
-
-.form button:hover {
+form button:hover {
   background-color: #6C8CFF;
   transition-property: background-color;
   transition-duration: 250ms;
   transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
-.form button:disabled {
+form button:disabled {
+  background-color: grey;
+  transition-property: background-color;
+  transition-duration: 250ms;
+  transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.show-more {
+  width: 100%;
+  max-width: 125px;
+  height: 40px;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+
+  background-color: #4E75FF;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+
+  margin-bottom: 8px;
+}
+
+.show-more:hover {
+  background-color: #6C8CFF;
+  transition-property: background-color;
+  transition-duration: 250ms;
+  transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.show-more:disabled {
   background-color: grey;
   transition-property: background-color;
   transition-duration: 250ms;

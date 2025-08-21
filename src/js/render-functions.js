@@ -4,7 +4,7 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 let lightbox = null;
 
 export function createGallery(images) { 
-    document.querySelector(".gallery").innerHTML = images.map((image) => { 
+    const markup = images.map((image) => { 
         return `<li class="gallery-item">
 	            <a class="gallery-link" href=${image.largeImageURL}>
 		        <img 
@@ -32,6 +32,7 @@ export function createGallery(images) {
                     </li>
                 </ul>
                 </li>`}).join("");
+    document.querySelector(".gallery").insertAdjacentHTML("beforeend", markup);
     if (!lightbox) {
         lightbox = new SimpleLightbox(".gallery a");
   } else {
@@ -49,4 +50,12 @@ export function showLoader() {
 
 export function hideLoader() { 
     document.querySelector(".loader").classList.add("hidden");
+}
+
+export function hideLoadMoreButton() { 
+    document.querySelector(".show-more").classList.add("hidden");
+}
+
+export function showLoadMoreButton() { 
+    document.querySelector(".show-more").classList.remove("hidden");
 }

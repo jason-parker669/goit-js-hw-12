@@ -13,5 +13,5 @@ export async function getImagesByQuery(query, page) {
             page: page
         }
     })
-    return response.data.hits;
+    return response.data;
 }

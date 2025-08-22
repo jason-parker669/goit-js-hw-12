@@ -11,7 +11,6 @@ const moreButton = document.querySelector('.show-more');
 let page = 1;
 let query = "";
 searchButton.disabled = true;
-moreButton.disabled = true;
 hideLoader();
 hideLoadMoreButton();
 
@@ -24,12 +23,13 @@ inputField.addEventListener("input", () => {
 
 searchForm.addEventListener("submit", async (event) => { 
     event.preventDefault();
-    showLoader();
     clearGallery();
+    showLoader();
     query = inputField.value.trim();
     page = 1;
     try {
-        const galleryArray = await getImagesByQuery(query, page);
+        const galleryData = await getImagesByQuery(query, page);
+        const galleryArray = galleryData.hits;
             if (galleryArray.length === 0) {
                     hideLoader();
                     iziToast.warning({
@@ -39,26 +39,24 @@ searchForm.addEventListener("submit", async (event) => {
                     });
                     searchForm.reset();
                     searchButton.disabled = true;
-                    hideLoadMoreButton();
-
                 }
                 else {
                     createGallery(galleryArray);
                     hideLoader();
-                    showLoadMoreButton();
-                    moreButton.textContent = `Give me more ${query}`;
-                    page += 1;   
-                    
-                    const nextGallery = await getImagesByQuery(query, page);
-                     if (nextGallery.length === 0)
-                     {
-                        moreButton.disabled = true; 
-                        hideLoadMoreButton();
+                                       
+                     if (document.querySelectorAll(".gallery .gallery-item").length >= galleryData.totalHits) {
+                        iziToast.warning({
+                             title: `That's all!`,
+                              message: `We're sorry, but you've reached the end of search results.`,
+                             position: 'bottomCenter',
+                        });
                      }
-                     else
-                        moreButton.disabled = false;
-                
-                    
+                     else { 
+                         showLoadMoreButton();
+                         moreButton.textContent = `Give me more ${query}`;
+                         page += 1;
+
+                    }             
                 }
     }
     catch (error)
@@ -75,31 +73,26 @@ searchForm.addEventListener("submit", async (event) => {
 moreButton.addEventListener("click", async (event) => { 
     event.preventDefault();
     hideLoadMoreButton();
-    moreButton.disabled = true;
     showLoader();
-        try {
-            const galleryArray = await getImagesByQuery(query, page);
-            const nextGalleryArray = await getImagesByQuery(query, page+1)
-            if (nextGalleryArray.length === 0) {
-                createGallery(galleryArray);
-                searchForm.reset();
-                hideLoader();
-                showLoadMoreButton();
-                moreButton.textContent = `No more ${query}`;
-                searchButton.disabled = true;
-                moreButton.disabled = true;
+    try {
+        const galleryData = await getImagesByQuery(query, page);
+        const galleryArray = galleryData.hits;
+        createGallery(galleryArray);
+        hideLoader();
+        if (document.querySelectorAll(".gallery .gallery-item").length >= galleryData.totalHits) {
+            iziToast.warning({
+                title: `That's all!`,
+                message: `We're sorry, but you've reached the end of search results.`,
+                position: 'bottomCenter',
+        });
                 }
             else {
-
-                createGallery(galleryArray);
                 const card = document.querySelector('.gallery .gallery-item');
                 if (card) {
                   const h = card.getBoundingClientRect().height;
                   window.scrollBy({ top: 2 * h, behavior: 'smooth' });
                 }
-                hideLoader();
                 showLoadMoreButton();
-                moreButton.disabled = false;
                 moreButton.textContent = `Give me more ${query}`;
                 page += 1;              
                 }

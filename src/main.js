@@ -54,8 +54,6 @@ searchForm.addEventListener("submit", async (event) => {
                      else { 
                          showLoadMoreButton();
                          moreButton.textContent = `Give me more ${query}`;
-                         page += 1;
-
                     }             
                 }
     }
@@ -74,6 +72,7 @@ moreButton.addEventListener("click", async (event) => {
     event.preventDefault();
     hideLoadMoreButton();
     showLoader();
+    page += 1;
     try {
         const galleryData = await getImagesByQuery(query, page);
         const galleryArray = galleryData.hits;
@@ -93,8 +92,7 @@ moreButton.addEventListener("click", async (event) => {
                   window.scrollBy({ top: 2 * h, behavior: 'smooth' });
                 }
                 showLoadMoreButton();
-                moreButton.textContent = `Give me more ${query}`;
-                page += 1;              
+                moreButton.textContent = `Give me more ${query}`;                          
                 }
     }
     catch (error)

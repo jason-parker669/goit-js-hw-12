@@ -78,6 +78,11 @@ moreButton.addEventListener("click", async (event) => {
         const galleryArray = galleryData.hits;
         createGallery(galleryArray);
         hideLoader();
+        const card = document.querySelector('.gallery .gallery-item');
+        if (card) {
+                  const h = card.getBoundingClientRect().height;
+                  window.scrollBy({ top: 2 * h, behavior: 'smooth' });
+            }
         if (document.querySelectorAll(".gallery .gallery-item").length >= galleryData.totalHits) {
             iziToast.warning({
                 title: `That's all!`,
@@ -86,11 +91,6 @@ moreButton.addEventListener("click", async (event) => {
         });
                 }
             else {
-                const card = document.querySelector('.gallery .gallery-item');
-                if (card) {
-                  const h = card.getBoundingClientRect().height;
-                  window.scrollBy({ top: 2 * h, behavior: 'smooth' });
-                }
                 showLoadMoreButton();
                 moreButton.textContent = `Give me more ${query}`;                          
                 }
